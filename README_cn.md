@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
 ### 选择特定节点(node)
 ```c
 
-/* 将price节点的值大于5的foot节点选出 */
+/* 将price节点的值大于5的food节点选出 */
 static XMLNodeList *PriceGreaterThanFiveFood(XMLNode *node, int idx, void *user_data) {
   XMLNodeList *list = malloc(sizeof(XMLNodeList));
   if (list == NULL) return NULL;
