@@ -214,6 +214,11 @@ XMLNode *XMLSelectNode(XMLNode *node, const char *node_path) {
 
   int len = strlen(node_path + 2);
   char *tag = (char *)malloc(len * sizeof(char));
+  if (tag == NULL) {
+    fprintf(stderr, "Cannot allocate enough memory.\n");
+    return NULL;
+  }
+
   if (*node_path != '/') {
     sprintf(tag, "/%s", node_path);
   } else {
@@ -226,14 +231,23 @@ XMLNode *XMLSelectNode(XMLNode *node, const char *node_path) {
     char *p2 = NULL;
     if (p1 != NULL) p2 = strchr(p, ']');
 
-    if ((p2 < p1) || (p1 == NULL && p2 != NULL) || (p1 != NULL && p2 == NULL)) goto error;
+    if ((p2 < p1) || (p1 == NULL && p2 != NULL) || (p1 != NULL && p2 == NULL)) {
+      fprintf(stderr, "Unmatched '[' and ']'.\n");
+      free(tag);
+      return NULL;
+    }
 
     bool has_index = (p1 != NULL) && (p2 != NULL);
     if (has_index) {
       char index[8] = { 0 };
       strncpy(index, p1 + 1, p2 - p1 - 1);
       int idx = atoi(index);
-      if (idx >= result->children.count) goto error; //index-out-of-range
+      if (idx < 0) idx = result->children.count + idx; // allow negative indexes
+      if (idx < 0 || idx >= result->children.count) {
+        fprintf(stderr, "index out of bounds\n");
+        free(tag);
+        return NULL;
+      }
 
       char tagname[128] = { 0 };
       strncpy(tagname, p, p1 - p);
@@ -242,18 +256,22 @@ XMLNode *XMLSelectNode(XMLNode *node, const char *node_path) {
       if (strncmp(child->name, tagname, strlen(tagname)) == 0) {
         result = child;
       } else {
-        goto error;
+        fprintf(stderr, "Node name '%s' not found\n", tagname);
+        free(tag);
+        return NULL;
       }
     } else {
      result = XMLFindFirstNode(result, p);
     }
-    if (result == NULL) goto error;
+    if (result == NULL) {
+      fprintf(stderr, "Node not found\n");
+      free(tag);
+      return NULL;
+    }
     p = strtok(NULL, "/");
   } //end while
-error:
-  free(tag);
-  tag = NULL;
 
+  free(tag);
   return result;
 }
 

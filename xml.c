@@ -106,6 +106,9 @@ void Test_test2xml(XMLDocument *doc) {
   XMLNode *root = XML_ROOT(doc);
   XMLNode *n2 = XMLSelectNode(root, "h:tr[2]/h:td[1]");
   if (n2 != NULL) printf("n2.text=%s\n", n2->text);
+
+  XMLNode *n3 = XMLSelectNode(root, "h:tr[-1]/h:td[1]");
+  if (n3 != NULL) printf("n3.text=%s\n", n3->text); //should be the same result with above code.
 }
 
 /* Testing 'test.xml' file */
