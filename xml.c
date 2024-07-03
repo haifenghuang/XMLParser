@@ -166,6 +166,102 @@ void Test_testxml(XMLDocument *doc) {
 
 }
 
+static XMLNodeList* SelectAllPricesNodes(XMLNode *node, int idx, void *user_data) {
+  XMLNodeList *list = malloc(sizeof(XMLNodeList));
+  if (list == NULL) return NULL;
+  XMLNodeListInit(list);
+
+  char *price = (char *)user_data;
+  for (size_t i = 0; i < node->children.count; ++i) {
+    XMLNode *child = node->children.nodes[i];
+    if (strncmp(child->name, price, strlen(price)) == 0) {
+      XMLNodeListAdd(list, child);
+    }
+  }
+  return list;
+}
+
+static XMLNodeList* SelectPriceGreaterThan35(XMLNode *node, int idx, void *user_data) {
+  XMLNodeList *list = malloc(sizeof(XMLNodeList));
+  if (list == NULL) return NULL;
+  XMLNodeListInit(list);
+
+  char *price = (char *)user_data;
+  for (size_t i = 0; i < node->children.count; ++i) {
+    XMLNode *child = node->children.nodes[i];
+    if (strncmp(child->name, price, strlen(price)) == 0) {
+      if (atof(child->text) > 35.0) XMLNodeListAdd(list, child);
+    }
+  }
+  return list;
+}
+
+static XMLNodeList* SelectTitleWithPriceGreaterThan35(XMLNode *node, int idx, void *user_data) {
+  XMLNodeList *list = malloc(sizeof(XMLNodeList));
+  if (list == NULL) return NULL;
+  XMLNodeListInit(list);
+
+  char *price = (char *)user_data;
+  XMLNode *title = NULL;
+  for (size_t i = 0; i < node->children.count; ++i) {
+    XMLNode *child = node->children.nodes[i];
+    if (strncmp(child->name, "title", 5) == 0) {
+      title = child;
+      continue;
+    }
+    if (strncmp(child->name, price, strlen(price)) == 0) {
+      if (atof(child->text) > 35.0) {
+        XMLNodeListAdd(list, title);
+      }
+    }
+  }
+  return list;
+}
+
+static void Test_test4xml(XMLDocument *doc) {
+  XMLNode *root = XML_ROOT(doc);
+
+  /* Select the title of the first book */
+  fprintf(stdout, "\n============Select the title of the first book============\n");
+  XMLNode *n1 = XMLSelectNode(root, "book[0]/title");
+  if (n1) {
+    printf("title=%s\n", n1->text);
+  }
+
+  fprintf(stdout, "\n============Select all the prices============\n");
+  XMLNodeList *list = XMLFindNodeSelector(root, SelectAllPricesNodes, (void *)"price");
+  if (list != NULL) {
+    fprintf(stdout, "prices count=[%ld]\n", list->count);
+    for (size_t i = 0; i < list->count; ++i) {
+      XMLNode *price = list->nodes[i];
+      fprintf(stdout, "%s\n", price->text);
+    }
+    free(list);
+  }
+
+  fprintf(stdout, "\n============Select price nodes with price>35============\n");
+  XMLNodeList *list2 = XMLFindNodeSelector(root, SelectPriceGreaterThan35, (void *)"price");
+  if (list2 != NULL) {
+    fprintf(stdout, "prices greater than 35 count=[%ld]\n", list2->count);
+    for (size_t i = 0; i < list2->count; ++i) {
+      XMLNode *price = list2->nodes[i];
+      fprintf(stdout, "%s\n", price->text);
+    }
+    free(list2);
+  }
+
+  fprintf(stdout, "\n============Select title nodes with price>35============\n");
+  XMLNodeList *list3 = XMLFindNodeSelector(root, SelectTitleWithPriceGreaterThan35, (void *)"price");
+  if (list3 != NULL) {
+    fprintf(stdout, "title nodes with prices greater than 35 count=[%ld]\n", list3->count);
+    for (size_t i = 0; i < list3->count; ++i) {
+      XMLNode *price = list3->nodes[i];
+      fprintf(stdout, "%s\n", price->text);
+    }
+    free(list3);
+  }
+}
+
 int main(int argc, char **argv) {
   char *filename = "./test.xml";
 #ifdef LEX_DEBUG
@@ -209,6 +305,8 @@ int main(int argc, char **argv) {
     Test_simplexml(&doc);
   } else if (strcmp(filename, "./test2.xml") == 0) {
     Test_test2xml(&doc);
+  } else if (strcmp(filename, "./test4.xml") == 0) {
+    Test_test4xml(&doc);
   }
 
   XMLDocumentFree(&doc);
