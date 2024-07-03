@@ -1,0 +1,14 @@
+<h:table>
+  <h:tr>
+    <h:td>Apples</h:td>
+    <h:td>Bananas</h:td>
+  </h:tr>
+  <h:tr>
+    <h:td>Apples2</h:td>
+    <h:td>Bananas2</h:td>
+  </h:tr>
+  <h:tr>
+    <h:td>Apples3</h:td>
+    <h:td>Bananas3</h:td>
+  </h:tr>
+</h:table>

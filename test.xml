@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<struct name="Person">
+  <fields>
+    <field name="name" type="string">
+      <name>hhf</name>
+    </field>
+    <field name="age" type="int">
+      <age>47</age>
+    </field>
+    <field name="age" type="int">
+      <age>48</age>
+    </field>
+    <field name="age" type="int">
+      <age>49</age>
+    </field>
+  </fields>
+  <description>This defines a person</description>
+</struct>
