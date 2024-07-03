@@ -19,7 +19,7 @@ English version: [English](README.md)
 ```c
 int main(int argc, char **argv) {
   XMLDocument doc = { 0 };
-  bool result = XMLDocumentParseFile(&doc, filename);
+  bool result = XMLDocumentParseFile(&doc, "./test.xml");
   if (result != true) {
     fprintf(stderr, "XMLDocumentParseFile failed!\n");
     exit(1);
