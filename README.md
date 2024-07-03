@@ -1,6 +1,6 @@
 # A simple XML parser for C
 XMLParser is a simple XML parser for the C language. It is intended to be simple to understand and easy to use. Although the parser has some limitations, but it can handle
-most of th standard xml files. And it also does not support xpath syntax, but
+most of the standard xml files. And it also does not support xpath syntax, but
 it has an easy to understand way for selecting/filtering the xml node.
 
 Chinese version: [中文](README_cn.md)
