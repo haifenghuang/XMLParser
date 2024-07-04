@@ -37,6 +37,7 @@ typedef struct XMLDocument {
   XMLNode *root;
   char *version;
   char *encoding;
+  char *docType; /* DocType string */
 }XMLDocument;
 
 typedef bool (*Predicate)(XMLNode *node, int idx, void *user_data);

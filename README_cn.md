@@ -10,7 +10,7 @@ English version: [English](README.md)
 
 ## 限制
 - ~~不支持CDATA~~
-- 不支持DOCTYPE
+- ~~不支持DOCTYPE()~~(DOCTYPE只支持解析，不支持验证)
 - 不支持Unicode
 
 ## 使用例

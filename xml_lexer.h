@@ -25,6 +25,7 @@ typedef enum {
   TOKEN_NAME,             /* tag name */
   TOKEN_COMMENT,          /* <!-- --> */
   TOKEN_CDATA,            /* <![CDATA[ .... ]]> */
+  TOKEN_DOCTYPE,          /* <!DOCTYPE ... ]> */
   TOKEN_ASSIGN,           /* = */
   TOKEN_STRING,           /* "" */
   TOKEN_TEXT              /* tag text */

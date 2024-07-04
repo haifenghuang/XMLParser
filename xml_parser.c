@@ -458,6 +458,11 @@ static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, cons
     NEXT(lexer);
   }
 
+  if (lexer_cur_token_is(lexer, TOKEN_DOCTYPE)) {
+    doc->docType = GET_CURR_TOKEN_VALUE(lexer); /* DocType string */
+    NEXT(lexer);
+  }
+
   // parse root node
   curr_node = XMLNodeNew(curr_node);
   if (!_XMLParseTree(lexer, curr_node)) return false;
@@ -523,6 +528,9 @@ bool XMLPrettyPrint(XMLDocument *doc, FILE *fp, int indent_len) {
     fprintf(fp, "<?xml version = \"%s\" encoding = \"%s\"?>\n",
             (doc->version) ? doc->version : "1.0",
             doc->encoding);
+  }
+  if (doc->docType) {
+    fprintf(fp, "%s\n", doc->docType);
   }
   _XMLPrettyPrintInternal(doc->root, fp, indent_len, 0);
 }

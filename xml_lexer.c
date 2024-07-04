@@ -154,6 +154,33 @@ static const char *read_cdata(lexer_t *lex, int *out_len) {
   return lex->input + position;
 }
 
+static const char *read_doctype(lexer_t *lex, int *out_len) {
+  int found_left_bracket = 0;
+  int position = lex->position;
+  int len = 0;
+
+  while (lex->ch != '\0') {
+    if (lex->ch == '[') found_left_bracket = 1;
+    if (found_left_bracket) {
+      if (!strncmp(lex->input + lex->position, "]>", 2)) {
+        read_char(lex);
+        read_char(lex);
+        break;
+      }
+    } else {
+      if (lex->ch == '>') {
+        read_char(lex);
+        break;
+      }
+    }
+    read_char(lex);
+  }
+
+  len = lex->position - position;
+  *out_len = len;
+  return lex->input + position;
+}
+
 static void skip_whitespace(lexer_t *lex) {
   char ch = lex->ch;
   while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
@@ -226,6 +253,11 @@ static token_t lexer_next_token_internal(lexer_t *lex) {
           int str_len = 0;
           const char *str = read_cdata(lex, &str_len);
           token_init(&out_tok, TOKEN_CDATA, str, str_len);
+          return out_tok;
+        } else if (!strncmp(lex->input + lex->position, "<!DOCTYPE", 9)) {
+          int str_len = 0;
+          const char *str = read_doctype(lex, &str_len);
+          token_init(&out_tok, TOKEN_DOCTYPE, str, str_len);
           return out_tok;
         } else {
           token_init(&out_tok, TOKEN_OPEN_TAG, "<", 1);

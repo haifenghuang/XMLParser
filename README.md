@@ -13,7 +13,7 @@ Chinese version: [中文](README_cn.md)
 
 ## Limitations
 - ~~Do not support CDATA~~
-- Do not support DOCTYPE
+- ~~Do not support DOCTYPE~~(Only parsing, no validation)
 - Do not support Unicode
 
 ## Usage Examples
