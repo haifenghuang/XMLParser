@@ -45,15 +45,24 @@ typedef XMLNodeList *(*Selector)(XMLNode *node, int idx, void *user_data);
 /* XML AttributeList */
 void XMLAttrListInit(XMLAttrList *list);
 void XMLAttrListAdd(XMLAttrList *list, XMLAttr *attr);
+XMLAttr* XMLAttrListGet(XMLAttrList *list, int index);
+size_t XMLAttrListCount(XMLAttrList *list);
 void XMLAttrListFree(XMLAttrList *list);
 
 /* XML NodeList */
 void XMLNodeListInit(XMLNodeList *list);
 void XMLNodeListAdd(XMLNodeList *list, XMLNode *node);
 void XMLNodeListAddList(XMLNodeList *list, XMLNodeList *srcList);
+XMLNode *XMLNodeListGet(XMLNodeList *list, int index);
+size_t XMLNodeListCount(XMLNodeList *list);
 void XMLNodeListFree(XMLNodeList *list);
 
 /* XML Node */
+/* Get children node at index */
+XMLNode *XMLNodeChildrenGet(XMLNode *node, int index);
+/* Get children count */
+size_t XMLNodeChildrenCount(XMLNode *node);
+
 /* Select node which satisfy node_path.
  * Note: 'node_path' doesn't support attribute, only Node.
  * */

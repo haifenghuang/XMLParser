@@ -75,6 +75,17 @@ void XMLAttrListAdd(XMLAttrList *list, XMLAttr *attr) {
   list->attrs[list->count++] = *attr;
 }
 
+XMLAttr *XMLAttrListGet(XMLAttrList *list, int index) {
+  if (index < 0) index = list->count + index; // allow negative indexes
+  if (index < 0 || index >= list->count) return NULL;
+  return &list->attrs[index];
+}
+
+size_t XMLAttrListCount(XMLAttrList *list) {
+  if (list == NULL) return 0;
+  return list->count;
+}
+
 void XMLAttrListFree(XMLAttrList *list) {
   for (size_t i = 0; i < list->count; ++i) XMLAttrFree(&list->attrs[i]);
 }
@@ -99,6 +110,17 @@ void XMLNodeListAddList(XMLNodeList *list, XMLNodeList *srcList) {
   for (size_t i = 0; i < srcList->count; ++i) {
     XMLNodeListAdd(list, srcList->nodes[i]);
   }
+}
+
+XMLNode *XMLNodeListGet(XMLNodeList *list, int index) {
+  if (index < 0) index = list->count + index; // allow negative indexes
+  if (index < 0 || index >= list->count) return NULL;
+  return list->nodes[index];
+}
+
+size_t XMLNodeListCount(XMLNodeList *list) {
+  if (list == NULL) return 0;
+  return list->count;
 }
 
 static void XMLNodeFree(XMLNode *node); //forword declaration
@@ -146,6 +168,18 @@ static void XMLNodeFree(XMLNode *node) {
 
   //Free children
   XMLNodeListFree(&node->children);
+}
+
+XMLNode *XMLNodeChildrenGet(XMLNode *node, int index) {
+  if (node == NULL) return NULL;
+  if (index < 0) index = node->children.count + index; // allow negative indexes
+  if (index < 0 || index >= node->children.count) return NULL; //index-out-of-bounds
+  return node->children.nodes[index];
+}
+
+size_t XMLNodeChildrenCount(XMLNode *node) {
+  if (node == NULL) return 0;
+  return node->children.count;
 }
 
 static bool _XMLParseTree(lexer_t *lexer, XMLNode *node) {

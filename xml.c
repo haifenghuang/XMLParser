@@ -52,8 +52,10 @@ static XMLNodeList* AgeGreaterEqualThan48(XMLNode *node, int idx, void *user_dat
   XMLNodeListInit(list);
 
   char *age = (char *)user_data;
-  for (size_t i = 0; i < node->children.count; ++i) {
-    XMLNode *child = node->children.nodes[i];
+  //for (size_t i = 0; i < node->children.count; ++i) {
+  for (size_t i = 0; i < XMLNodeChildrenCount(node); ++i) { //same as above 'for'
+    //XMLNode *child = node->children.nodes[i];
+    XMLNode *child = XMLNodeChildrenGet(node, i); //same as above
     if (strncmp(child->name, age, strlen(age)) == 0) {
       if (atoi(child->text) >= 48) {
         XMLNodeListAdd(list, child);
