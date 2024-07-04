@@ -125,8 +125,8 @@ static const char *read_comment(lexer_t *lex, int *out_len) {
       read_char(lex);
       break;
     }
+    read_char(lex);
   }
-  read_char(lex);
 
   len = lex->position - position;
   *out_len = len;
