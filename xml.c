@@ -260,8 +260,8 @@ static void Test_test4xml(XMLDocument *doc) {
   if (list3 != NULL) {
     fprintf(stdout, "title nodes with prices greater than 35 count=[%ld]\n", list3->count);
     for (size_t i = 0; i < list3->count; ++i) {
-      XMLNode *price = list3->nodes[i];
-      fprintf(stdout, "%s\n", price->text);
+      XMLNode *title = list3->nodes[i];
+      fprintf(stdout, "%s\n", title->text);
     }
     free(list3);
   }
