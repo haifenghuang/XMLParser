@@ -21,6 +21,8 @@ static const char *token_type_names[] = {
   "<?",
   "?>",
   "NAME",
+  "COMMENT",
+  "CDATA",
   "ASSIGN",
   "STRING",
   "TEXT"
@@ -133,6 +135,25 @@ static const char *read_comment(lexer_t *lex, int *out_len) {
   return lex->input + position;
 }
 
+static const char *read_cdata(lexer_t *lex, int *out_len) {
+  int position = lex->position;
+  int len = 0;
+
+  while (lex->ch != '\0') {
+    if (!strncmp(lex->input + lex->position, "]]>", 3)) {
+      read_char(lex);
+      read_char(lex);
+      read_char(lex);
+      break;
+    }
+    read_char(lex);
+  }
+
+  len = lex->position - position;
+  *out_len = len;
+  return lex->input + position;
+}
+
 static void skip_whitespace(lexer_t *lex) {
   char ch = lex->ch;
   while (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
@@ -200,6 +221,11 @@ static token_t lexer_next_token_internal(lexer_t *lex) {
           int str_len = 0;
           const char *str = read_comment(lex, &str_len);
           token_init(&out_tok, TOKEN_COMMENT, str, str_len);
+          return out_tok;
+        } else if (!strncmp(lex->input + lex->position, "<![CDATA[", 9)) {
+          int str_len = 0;
+          const char *str = read_cdata(lex, &str_len);
+          token_init(&out_tok, TOKEN_CDATA, str, str_len);
           return out_tok;
         } else {
           token_init(&out_tok, TOKEN_OPEN_TAG, "<", 1);

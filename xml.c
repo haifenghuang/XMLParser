@@ -267,6 +267,14 @@ static void Test_test4xml(XMLDocument *doc) {
   }
 }
 
+static void Test_cdataxml(XMLDocument *doc) {
+  XMLNode *root = XML_ROOT(doc);
+  XMLNode *m = XMLSelectNode(root, "description");
+  if (m) {
+    fprintf(stdout, "description=%s\n", XMLDecodeText(m));
+  }
+}
+
 int main(int argc, char **argv) {
   char *filename = "./test.xml";
 #ifdef LEX_DEBUG
@@ -312,6 +320,8 @@ int main(int argc, char **argv) {
     Test_test2xml(&doc);
   } else if (strcmp(filename, "./test4.xml") == 0) {
     Test_test4xml(&doc);
+  } else if (strcmp(filename, "./cdata.xml") == 0) {
+    Test_cdataxml(&doc);
   }
 
   XMLDocumentFree(&doc);

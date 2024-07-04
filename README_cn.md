@@ -9,7 +9,7 @@ English version: [English](README.md)
 
 
 ## 限制
-- 不支持CDATA
+- ~~不支持CDATA~~
 - 不支持DOCTYPE
 - 不支持Unicode
 

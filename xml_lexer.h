@@ -23,7 +23,8 @@ typedef enum {
   TOKEN_CLOSE_HEADER,     /* ?> */
 
   TOKEN_NAME,             /* tag name */
-  TOKEN_COMMENT,
+  TOKEN_COMMENT,          /* <!-- --> */
+  TOKEN_CDATA,            /* <![CDATA[ .... ]]> */
   TOKEN_ASSIGN,           /* = */
   TOKEN_STRING,           /* "" */
   TOKEN_TEXT              /* tag text */

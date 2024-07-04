@@ -229,6 +229,9 @@ static bool _XMLParseTree(lexer_t *lexer, XMLNode *node) {
     } else if (lexer_cur_token_is(lexer, TOKEN_TEXT)) {
       node->text = GET_CURR_TOKEN_VALUE(lexer);
       NEXT(lexer);
+    } else if (lexer_cur_token_is(lexer, TOKEN_CDATA)) { /* CDATA is treated as text */
+      node->text = GET_CURR_TOKEN_VALUE(lexer);
+      NEXT(lexer);
     } else if (lexer_cur_token_is(lexer, TOKEN_COMMENT)) {
       XMLNode *child = XMLNodeNew(node);
       if (!_XMLParseTree(lexer, child)) return false;
@@ -391,6 +394,11 @@ char *XMLDecodeText(const XMLNode *node) {
 
   char *result = node->text;
   for(d = result, s = node->text; *s; s++, d++) {
+    if (strncmp(s, "<![CDATA[", 9) == 0) {
+      s += 9;
+    } else if (strncmp(s, "]]>", 3) == 0) {
+      s += 3;
+    }
     if (*s != '&') {
       if (d != s) *d = *s;
       continue;
