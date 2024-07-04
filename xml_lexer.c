@@ -240,7 +240,7 @@ static token_t lexer_next_token_internal(lexer_t *lex) {
         } else if (lex->ch == '"' || lex->ch == '\'') {
           int str_len = 0;
           const char *str = read_string(lex, &str_len);
-          token_init(&out_tok, TOKEN_STRING, str, str_len);
+          token_init(&out_tok, TOKEN_STRING, str+1, str_len-2);
           return out_tok;
         }
         break;
