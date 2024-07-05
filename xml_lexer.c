@@ -87,7 +87,7 @@ static char peek_nchar(lexer_t *lex, int n) {
 static const char *read_identifier(lexer_t *lex, int *out_len) {
   int position = lex->position;
   int len = 0;
-  while (is_digit(lex->ch) || is_letter(lex->ch) || lex->ch == ':' || lex->ch == '-') read_char(lex);
+  while (is_digit(lex->ch) || is_letter(lex->ch) || lex->ch == ':' || lex->ch == '-' || lex->ch == '.') read_char(lex);
 
   len = lex->position - position;
   *out_len = len;
