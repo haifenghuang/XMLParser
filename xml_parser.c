@@ -183,13 +183,6 @@ size_t XMLNodeChildrenCount(XMLNode *node) {
 }
 
 static bool _XMLParseTree(lexer_t *lexer, XMLNode *node) {
-  if (lexer_cur_token_is(lexer, TOKEN_COMMENT)) {
-    node->name = GET_CURR_TOKEN_VALUE(lexer);
-    node->isComment = true;
-    NEXT(lexer);
-    return true;
-  }
-
   EXPECT(lexer, TOKEN_NAME);
   node->name = GET_CURR_TOKEN_VALUE(lexer);
   NEXT(lexer);
@@ -234,7 +227,9 @@ static bool _XMLParseTree(lexer_t *lexer, XMLNode *node) {
       NEXT(lexer);
     } else if (lexer_cur_token_is(lexer, TOKEN_COMMENT)) {
       XMLNode *child = XMLNodeNew(node);
-      if (!_XMLParseTree(lexer, child)) return false;
+      child->name = GET_CURR_TOKEN_VALUE(lexer);
+      child->isComment = true;
+      NEXT(lexer);
     } else {
       return false;
     }

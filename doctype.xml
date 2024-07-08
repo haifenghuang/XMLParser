@@ -12,6 +12,7 @@
 <address>
    <name>Tanmay Patil</name>
    <company>TutorialsPoint</company>
+   <!--This is third comment-->
    <phone>(011) 123-4567</phone>
    <description><![CDATA[<home>This is the home address</home>]]></description>
 </address>
