@@ -22,7 +22,7 @@ Chinese version: [中文](README_cn.md)
 ```c
 int main(int argc, char **argv) {
   XMLDocument doc = { 0 };
-  bool result = XMLDocumentParseFile(&doc, "./test.xml");
+  bool result = XMLDocumentParseFile(&doc, "./test3.xml");
   if (result != true) {
     fprintf(stderr, "XMLDocumentParseFile failed!\n");
     exit(1);
@@ -34,6 +34,24 @@ int main(int argc, char **argv) {
   return 0;
 }
 ```
+
+Result：
+```
+# before
+<?xml version="1.0" encoding="UTF-8" ?><bookstore><book><title lang="en">Harry Potter</title><author>J K. Rowling</author><year>2005</year><price>29.99</price></book></bookstore>
+
+# after
+<?xml version="1.0" encoding="UTF-8" ?>
+<bookstore>
+    <book>
+        <title lang="en">Harry Potter</title>
+        <author>J K. Rowling</author>
+        <year>2005</year>
+        <price>29.99</price>
+    </book>
+</bookstore>
+```
+
 
 ### Select specific node
 ```c
@@ -82,6 +100,31 @@ int main(int argc, char **argv) {
   XMLDocumentFree(&doc);
   return 0;
 }
+```
+
+Result:
+```sh
+food count=[4]
+MATCHES [0]:
+         name: Belgian Waffles
+         price: $5.95
+         description: Two of our famous Belgian with "plenty of maple syrup"
+         calories: 650
+MATCHES [1]:
+         name: Strawberry Belgian Waffles
+         price: $7.95
+         description: Light Belgian waffles covered with 'strawberries' and whipped cream
+         calories: 900
+MATCHES [2]:
+         name: Berry-Berry Belgian Waffles
+         price: $8.95
+         description: Light Belgian waffles covered with an assortment of 'fresh berries' and whipped cream
+         calories: 900
+MATCHES [3]:
+         name: Homestyle Breakfast
+         price: $6.95
+         description: Two eggs, bacon or sausage, toast, and our ever-popular hash browns
+         calories: 950
 ```
 
 ## License
