@@ -271,25 +271,38 @@ XMLNode *XMLSelectNode(XMLNode *node, const char *node_path) {
 
     bool has_index = (p1 != NULL) && (p2 != NULL);
     if (has_index) {
-      char index[8] = { 0 };
+      //char index[8] = { 0 };
+      char *index = malloc((p2 - p1) * sizeof(char));
+      if (index == NULL) {
+        fprintf(stderr, "malloc failed\n");
+        free(tag);
+        return NULL;
+      }
       strncpy(index, p1 + 1, p2 - p1 - 1);
+      index[p2 - p1 - 1] = '\0'; //make sure it is null terminated
       int idx = atoi(index);
       if (idx < 0) idx = result->children.count + idx; // allow negative indexes
       if (idx < 0 || idx >= result->children.count) {
         fprintf(stderr, "index out of bounds\n");
         free(tag);
+        free(index);
         return NULL;
       }
+      free(index);
 
-      char tagname[128] = { 0 };
+      //char tagname[128] = { 0 };
+      char *tagname = malloc((p1 - p + 1) * sizeof(char));
       strncpy(tagname, p, p1 - p);
+      tagname[p1 - p] = '\0'; //make sure it is null terminated
 
       XMLNode *child = result->children.nodes[idx];
       if (strncmp(child->name, tagname, strlen(tagname)) == 0) {
         result = child;
+        free(tagname);
       } else {
         fprintf(stderr, "Node name '%s' not found\n", tagname);
         free(tag);
+        free(tagname);
         return NULL;
       }
     } else {
