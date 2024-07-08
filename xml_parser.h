@@ -37,7 +37,10 @@ typedef struct XMLDocument {
   char *encoding;
 }XMLDocument;
 
+/* Filter node callback */
 typedef bool (*Predicate)(XMLNode *node, int idx, void *user_data);
+
+/* Select node callback */
 typedef XMLNodeList *(*Selector)(XMLNode *node, int idx, void *user_data);
 
 /* XML AttributeList */
