@@ -460,20 +460,13 @@ static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, cons
     NEXT(lexer);
   }
 
-  /* check for doctype */
-  if (lexer_cur_token_is(lexer, TOKEN_DOCTYPE)) {
-    XMLNode *doctype_node = XMLNodeNew(NULL);
-    doctype_node->name = GET_CURR_TOKEN_VALUE(lexer);
-    XMLNodeListAdd(&doc->others, doctype_node);
+  /* check for doctype and comment nodes */
+  while (lexer_cur_token_is(lexer, TOKEN_DOCTYPE) || lexer_cur_token_is(lexer, TOKEN_COMMENT)) {
+    XMLNode *node = XMLNodeNew(NULL);
+    node->name = GET_CURR_TOKEN_VALUE(lexer);
+    XMLNodeListAdd(&doc->others, node);
     NEXT(lexer);
-  }
-
-  /* check for comment nodes */
-  while (lexer_cur_token_is(lexer,TOKEN_COMMENT)) {
-    XMLNode *comment_node = XMLNodeNew(NULL);
-    comment_node->name = GET_CURR_TOKEN_VALUE(lexer);
-    XMLNodeListAdd(&doc->others, comment_node);
-    NEXT(lexer);
+    
   }
 
   // parse root node

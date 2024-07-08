@@ -1,4 +1,5 @@
 <?xml version = "1.0" encoding = "UTF-8" ?>
+<!--This is an comment-->
 <!DOCTYPE address
 [
    <!ELEMENT address (name,company,phone)>
@@ -7,7 +8,6 @@
    <!ELEMENT phone (#PCDATA)>
 ]>
 
-<!--This is an comment-->
 <!--This is another comment-->
 <address>
    <name>Tanmay Patil</name>
