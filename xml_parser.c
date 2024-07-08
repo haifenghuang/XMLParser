@@ -461,7 +461,6 @@ static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, cons
     node->name = GET_CURR_TOKEN_VALUE(lexer);
     XMLNodeListAdd(&doc->others, node);
     NEXT(lexer);
-    
   }
 
   // parse root node
