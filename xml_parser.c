@@ -530,10 +530,12 @@ bool XMLPrettyPrint(XMLDocument *doc, FILE *fp, int indent_len) {
             doc->encoding);
   }
 
+  /* print nodes before root */
   for (size_t i = 0; i < doc->others.count; ++i) {
     XMLNode *other = doc->others.nodes[i];
       fprintf(fp, "%s\n", other->name); //node name
   }
+
   _XMLPrettyPrintInternal(doc->root, fp, indent_len, 0);
 }
 
@@ -544,7 +546,7 @@ void XMLDocumentFree(XMLDocument *doc) {
     doc->contents = NULL;
   }
 
-  //Free others node before root
+  //Free others node(s) before root
   XMLNodeListFree(&doc->others);
 
   XMLNodeFree(doc->root);
