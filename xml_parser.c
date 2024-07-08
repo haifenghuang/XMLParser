@@ -90,6 +90,7 @@ size_t XMLAttrListCount(XMLAttrList *list) {
 }
 
 void XMLAttrListFree(XMLAttrList *list) {
+  if (list == NULL) return;
   for (size_t i = 0; i < list->count; ++i) XMLAttrFree(&list->attrs[i]);
 }
 
@@ -128,6 +129,7 @@ size_t XMLNodeListCount(XMLNodeList *list) {
 
 static void XMLNodeFree(XMLNode *node); //forword declaration
 void XMLNodeListFree(XMLNodeList *list) {
+  if (list == NULL) return;
   for (size_t i = 0; i < list->count; ++i) {
     XMLNode *child = list->nodes[i];
     if (child != NULL) {
@@ -570,7 +572,9 @@ void XMLDocumentFree(XMLDocument *doc) {
   //Free others node(s) before root
   XMLNodeListFree(&doc->others);
 
-  XMLNodeFree(doc->root);
-  doc->root = NULL;
+  if (doc->root) {
+    XMLNodeFree(doc->root);
+    doc->root = NULL;
+  }
 }
 
