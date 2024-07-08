@@ -292,6 +292,11 @@ XMLNode *XMLSelectNode(XMLNode *node, const char *node_path) {
 
       //char tagname[128] = { 0 };
       char *tagname = malloc((p1 - p + 1) * sizeof(char));
+      if (tagname == NULL) {
+        fprintf(stderr, "malloc failed\n");
+        free(tag);
+        return NULL;
+      }
       strncpy(tagname, p, p1 - p);
       tagname[p1 - p] = '\0'; //make sure it is null terminated
 
