@@ -7,6 +7,8 @@
    <!ELEMENT phone (#PCDATA)>
 ]>
 
+<!--This is an comment-->
+<!--This is another comment-->
 <address>
    <name>Tanmay Patil</name>
    <company>TutorialsPoint</company>

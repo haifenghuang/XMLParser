@@ -34,10 +34,10 @@ typedef struct XMLNode {
 
 typedef struct XMLDocument {
   char *contents;
+  XMLNodeList others; /* other node before root(only support DOCTYPE and comment nodes */
   XMLNode *root;
   char *version;
   char *encoding;
-  char *docType; /* DocType string */
 }XMLDocument;
 
 typedef bool (*Predicate)(XMLNode *node, int idx, void *user_data);

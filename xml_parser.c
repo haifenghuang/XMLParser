@@ -420,6 +420,8 @@ char *XMLDecodeText(const XMLNode *node) {
 
 /* XML Document */
 static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, const char *path, lexer_t *lexer) {
+  XMLNodeListInit(&doc->others);
+
   doc->root = XMLNodeNew(NULL);
   XMLNode *curr_node = doc->root;
 
@@ -458,8 +460,19 @@ static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, cons
     NEXT(lexer);
   }
 
+  /* check for doctype */
   if (lexer_cur_token_is(lexer, TOKEN_DOCTYPE)) {
-    doc->docType = GET_CURR_TOKEN_VALUE(lexer); /* DocType string */
+    XMLNode *doctype_node = XMLNodeNew(NULL);
+    doctype_node->name = GET_CURR_TOKEN_VALUE(lexer);
+    XMLNodeListAdd(&doc->others, doctype_node);
+    NEXT(lexer);
+  }
+
+  /* check for comment nodes */
+  while (lexer_cur_token_is(lexer,TOKEN_COMMENT)) {
+    XMLNode *comment_node = XMLNodeNew(NULL);
+    comment_node->name = GET_CURR_TOKEN_VALUE(lexer);
+    XMLNodeListAdd(&doc->others, comment_node);
     NEXT(lexer);
   }
 
@@ -529,8 +542,10 @@ bool XMLPrettyPrint(XMLDocument *doc, FILE *fp, int indent_len) {
             (doc->version) ? doc->version : "1.0",
             doc->encoding);
   }
-  if (doc->docType) {
-    fprintf(fp, "%s\n", doc->docType);
+
+  for (size_t i = 0; i < doc->others.count; ++i) {
+    XMLNode *other = doc->others.nodes[i];
+      fprintf(fp, "%s\n", other->name); //node name
   }
   _XMLPrettyPrintInternal(doc->root, fp, indent_len, 0);
 }
@@ -541,6 +556,9 @@ void XMLDocumentFree(XMLDocument *doc) {
     free(doc->contents);
     doc->contents = NULL;
   }
+
+  //Free others node before root
+  XMLNodeListFree(&doc->others);
 
   XMLNodeFree(doc->root);
   doc->root = NULL;
