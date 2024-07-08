@@ -11,7 +11,7 @@ English version: [English](README.md)
 ## 限制
 - ~~不支持CDATA~~
 - ~~不支持DOCTYPE()~~(DOCTYPE只支持解析，不支持验证)
-- 不支持Unicode
+- 不支持Unicode(只支持UTF-8)
 
 ## 使用例
 

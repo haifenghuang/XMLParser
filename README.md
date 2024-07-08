@@ -14,7 +14,7 @@ Chinese version: [中文](README_cn.md)
 ## Limitations
 - ~~Do not support CDATA~~
 - ~~Do not support DOCTYPE~~(Only parsing, no validation)
-- Do not support Unicode
+- Do not support Unicode(Only support UTF-8)
 
 ## Usage Examples
 
