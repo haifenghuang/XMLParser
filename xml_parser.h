@@ -1,9 +1,6 @@
 #ifndef __XML_PARSER_H__
 #define __XML_PARSER_H__
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
 
 typedef struct XMLAttr {
