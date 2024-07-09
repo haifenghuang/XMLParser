@@ -8,6 +8,7 @@
    <!ELEMENT phone (#PCDATA)>
 ]>
 
+<![CDATA[<home>This is the home address</home>]]>
 <!--This is another comment-->
 <address>
    <name>Tanmay Patil</name>
