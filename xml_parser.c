@@ -453,33 +453,9 @@ static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, cons
   NEXT(lexer);
   NEXT(lexer);
 
-  /* parse the header if it has */
-  if (lexer_cur_token_is(lexer, TOKEN_OPEN_HEADER)) {
-    NEXT(lexer);
-    if (!lexer_cur_token_is(lexer, TOKEN_NAME) || strncmp("xml", lexer->cur_token.literal, lexer->cur_token.len) != 0) {
-      fprintf(stderr, "XML Header not begins with 'xml'\n");
-      return false;
-    }
-
-    while (!lexer_cur_token_is(lexer, TOKEN_CLOSE_HEADER)) {
-      NEXT(lexer);
-      if (lexer_cur_token_is(lexer, TOKEN_NAME)) {
-        if (strncmp("version", lexer->cur_token.literal, lexer->cur_token.len) == 0) {
-          EXPECT(lexer, TOKEN_ASSIGN);
-          EXPECT(lexer, TOKEN_STRING);
-          doc->version = GET_CURR_TOKEN_VALUE(lexer);
-        } else if (strncmp("encoding", lexer->cur_token.literal, lexer->cur_token.len) == 0) {
-          EXPECT(lexer, TOKEN_ASSIGN);
-          EXPECT(lexer, TOKEN_STRING);
-          doc->encoding = GET_CURR_TOKEN_VALUE(lexer);
-        }
-      }
-    } //end while
-    NEXT(lexer);
-  }
-
-  /* check for doctype, comment and cdata nodes */
-  while (lexer_cur_token_is(lexer, TOKEN_DOCTYPE) || lexer_cur_token_is(lexer, TOKEN_COMMENT) || lexer_cur_token_is(lexer, TOKEN_CDATA)) {
+  /* check for node before root */
+  while (lexer_cur_token_is(lexer, TOKEN_DOCTYPE) || lexer_cur_token_is(lexer, TOKEN_COMMENT) || 
+         lexer_cur_token_is(lexer, TOKEN_CDATA) || lexer_cur_token_is(lexer, TOKEN_PI)) {
     XMLNode *node = XMLNodeNew(NULL);
     node->name = GET_CURR_TOKEN_VALUE(lexer);
     XMLNodeListAdd(&doc->others, node);
@@ -547,11 +523,6 @@ static void _XMLPrettyPrintInternal(XMLNode *node, FILE *fp, int indent_len, int
 
 bool XMLPrettyPrint(XMLDocument *doc, FILE *fp, int indent_len) {
   if (fp == NULL) fp = stdout;
-  if (doc->encoding) {
-    fprintf(fp, "<?xml version = \"%s\" encoding = \"%s\"?>\n",
-            (doc->version) ? doc->version : "1.0",
-            doc->encoding);
-  }
 
   /* print nodes before root */
   for (size_t i = 0; i < doc->others.count; ++i) {

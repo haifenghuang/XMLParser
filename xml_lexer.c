@@ -135,6 +135,24 @@ static const char *read_comment(lexer_t *lex, int *out_len) {
   return lex->input + position;
 }
 
+static const char *read_pi(lexer_t *lex, int *out_len) {
+  int position = lex->position;
+  int len = 0;
+
+  while (lex->ch != '\0') {
+    if (!strncmp(lex->input + lex->position, "?>", 2)) {
+      read_char(lex);
+      read_char(lex);
+      break;
+    }
+    read_char(lex);
+  }
+
+  len = lex->position - position;
+  *out_len = len;
+  return lex->input + position;
+}
+
 static const char *read_cdata(lexer_t *lex, int *out_len) {
   int position = lex->position;
   int len = 0;
@@ -242,8 +260,12 @@ static token_t lexer_next_token_internal(lexer_t *lex) {
           token_init(&out_tok, TOKEN_OPENSLASH_TAG, "</", 2);
           read_char(lex);
         } else if (peek_char(lex) == '?') {
-          token_init(&out_tok, TOKEN_OPEN_HEADER, "<?", 2);
-          read_char(lex);
+          int str_len = 0;
+          const char *str = read_pi(lex, &str_len);
+          token_init(&out_tok, TOKEN_PI, str, str_len);
+          return out_tok;
+          //token_init(&out_tok, TOKEN_OPEN_HEADER, "<?", 2);
+          //read_char(lex);
         } else if ((peek_nchar(lex, 0) == '!') && (peek_nchar(lex, 1) == '-') && (peek_nchar(lex, 1) == '-')) {
           int str_len = 0;
           const char *str = read_comment(lex, &str_len);
@@ -274,14 +296,7 @@ static token_t lexer_next_token_internal(lexer_t *lex) {
         }
       }
       break;
-      case '?': {
-        if (peek_char(lex) == '>') {
-          token_init(&out_tok, TOKEN_CLOSE_HEADER, "?>", 2);
-          read_char(lex);
-          lex->inTag = false;
-        }
-      }
-      break;
+
       default:
         if (!lex->inTag) {
           int text_len = 0;

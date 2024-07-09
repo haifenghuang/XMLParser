@@ -33,8 +33,8 @@ typedef struct XMLDocument {
   char *contents;
   XMLNodeList others; /* other nodes before root */
   XMLNode *root;
-  char *version;
-  char *encoding;
+  //char *version;
+  //char *encoding;
 }XMLDocument;
 
 /* Filter node callback */

@@ -19,8 +19,9 @@ typedef enum {
   TOKEN_CLOSE_TAG,        /* > */
   TOKEN_OPENSLASH_TAG,    /* </ */
   TOKEN_CLOSESLASH_TAG,   /* /> */
-  TOKEN_OPEN_HEADER,      /* <? */
-  TOKEN_CLOSE_HEADER,     /* ?> */
+  TOKEN_PI,               /* processing instruction: <? ?> */
+  //TOKEN_OPEN_HEADER,      /* <? */
+  //TOKEN_CLOSE_HEADER,     /* ?> */
 
   TOKEN_NAME,             /* tag name */
   TOKEN_COMMENT,          /* <!-- --> */
