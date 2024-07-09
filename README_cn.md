@@ -6,7 +6,7 @@ English version: [English](README.md)
 - 简单
 - 易于使用和理解
 - XML文档格式化
-
+- 节点过滤和选择
 
 ## 限制
 - ~~不支持CDATA~~

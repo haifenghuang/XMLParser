@@ -3,12 +3,13 @@ XMLParser is a simple XML parser for the C language. It is intended to be simple
 most of the standard xml files. And it also does not support xpath syntax, but
 it has an easy to understand(maybe more elegent) way for selecting/filtering the xml node(though not powerful than xpath).
 
-Chinese version: [中文](README_cn.md)
+Chinese version: [ä¸­æ–‡](README_cn.md)
 
 ## Features
 - Simple
 - Easy to use and understand
 - Pretty printing XML
+- Node filtering & Selecting
 
 
 ## Limitations
@@ -35,7 +36,7 @@ int main(int argc, char **argv) {
 }
 ```
 
-Result：
+Resultï¼š
 ```
 # before
 <?xml version="1.0" encoding="UTF-8" ?><bookstore><book><title lang="en">Harry Potter</title><author>J K. Rowling</author><year>2005</year><price>29.99</price></book></bookstore>

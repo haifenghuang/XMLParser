@@ -31,7 +31,7 @@ typedef struct XMLNode {
 
 typedef struct XMLDocument {
   char *contents;
-  XMLNodeList others; /* other nodes before root(only support DOCTYPE and comment nodes) */
+  XMLNodeList others; /* other nodes before root */
   XMLNode *root;
   char *version;
   char *encoding;
