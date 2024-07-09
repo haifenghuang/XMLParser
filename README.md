@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
 }
 ```
 
-Resultï¼š
+Result:
 ```
 # before
 <?xml version="1.0" encoding="UTF-8" ?><bookstore><book><title lang="en">Harry Potter</title><author>J K. Rowling</author><year>2005</year><price>29.99</price></book></bookstore>
