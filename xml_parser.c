@@ -479,7 +479,7 @@ static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, cons
   }
 
   /* check for doctype and comment nodes */
-  while (lexer_cur_token_is(lexer, TOKEN_DOCTYPE) || lexer_cur_token_is(lexer, TOKEN_COMMENT)) {
+  while (lexer_cur_token_is(lexer, TOKEN_DOCTYPE) || lexer_cur_token_is(lexer, TOKEN_COMMENT) || lexer_cur_token_is(lexer, TOKEN_CDATA)) {
     XMLNode *node = XMLNodeNew(NULL);
     node->name = GET_CURR_TOKEN_VALUE(lexer);
     XMLNodeListAdd(&doc->others, node);
