@@ -61,6 +61,7 @@ void token_dump(token_t tok);
 
 bool lexer_init(lexer_t *lex, const char *input, const char *filename);
 bool lexer_cur_token_is(lexer_t *lex, token_type_t type);
+token_type_t lexer_cur_token(lexer_t *lex);
 bool lexer_peek_token_is(lexer_t *lex, token_type_t type);
 void lexer_next_token(lexer_t *lex);
 bool lexer_expect_peek(lexer_t *lex, token_type_t type);

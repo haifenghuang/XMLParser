@@ -20,13 +20,22 @@ typedef struct XMLNodeList {
   struct XMLNode **nodes;
 }XMLNodeList;
 
+typedef enum NodeType{
+  NT_NODE,
+  NT_TEXT,
+  NT_COMMENT,
+  NT_CDATA,
+  NT_PI, /* processing instruction */
+  NT_DOCTYPE
+}NodeType;
+
 typedef struct XMLNode {
+  NodeType type;
   char *name;
   char *text;
   struct XMLNode *parent;
   XMLAttrList attrList;
   XMLNodeList children;
-  bool isComment; /* is this node a comment node? */
 }XMLNode;
 
 typedef struct XMLDocument {

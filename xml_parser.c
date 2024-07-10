@@ -146,7 +146,6 @@ static XMLNode *XMLNodeNew(XMLNode *parent) {
   node->parent = parent;
   node->name = NULL;
   node->text = NULL;
-  node->isComment = false;
 
   XMLAttrListInit(&node->attrList);
   XMLNodeListInit(&node->children);
@@ -190,6 +189,7 @@ size_t XMLNodeChildrenCount(XMLNode *node) {
 static bool _XMLParseTree(lexer_t *lexer, XMLNode *node) {
   EXPECT(lexer, TOKEN_NAME);
   node->name = GET_CURR_TOKEN_VALUE(lexer);
+  node->type = NT_NODE;
   NEXT(lexer);
 
   /* parse attributes */
@@ -226,14 +226,16 @@ static bool _XMLParseTree(lexer_t *lexer, XMLNode *node) {
       break;
     } else if (lexer_cur_token_is(lexer, TOKEN_TEXT)) {
       node->text = GET_CURR_TOKEN_VALUE(lexer);
+      node->type = NT_TEXT;
       NEXT(lexer);
     } else if (lexer_cur_token_is(lexer, TOKEN_CDATA)) { /* CDATA is treated as text */
       node->text = GET_CURR_TOKEN_VALUE(lexer);
+      node->type = NT_CDATA;
       NEXT(lexer);
     } else if (lexer_cur_token_is(lexer, TOKEN_COMMENT)) {
       XMLNode *child = XMLNodeNew(node);
       child->name = GET_CURR_TOKEN_VALUE(lexer);
-      child->isComment = true;
+      node->type = NT_COMMENT;
       NEXT(lexer);
     } else {
       return false;
@@ -457,6 +459,14 @@ static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, cons
   while (lexer_cur_token_is(lexer, TOKEN_DOCTYPE) || lexer_cur_token_is(lexer, TOKEN_COMMENT) || 
          lexer_cur_token_is(lexer, TOKEN_CDATA) || lexer_cur_token_is(lexer, TOKEN_PI)) {
     XMLNode *node = XMLNodeNew(NULL);
+    token_type_t curTok = lexer_cur_token(lexer);
+    switch (curTok) {
+      case TOKEN_DOCTYPE: node->type = NT_DOCTYPE; break;
+      case TOKEN_COMMENT: node->type = NT_COMMENT; break;
+      case TOKEN_CDATA: node->type = NT_CDATA; break;
+      case TOKEN_PI: node->type = NT_PI; break;
+      default: break;
+    } /* end switch */
     node->name = GET_CURR_TOKEN_VALUE(lexer);
     XMLNodeListAdd(&doc->others, node);
     NEXT(lexer);
@@ -491,7 +501,7 @@ static void _XMLPrettyPrintInternal(XMLNode *node, FILE *fp, int indent_len, int
     //indent level
     if (times > 0) fprintf(fp, "%*s", indent_len * times, " ");
 
-    if (child->isComment) {
+    if (child->type == NT_COMMENT) {
       fprintf(fp, "%s\n", child->name); //node name
       continue;
     } else {
@@ -504,7 +514,7 @@ static void _XMLPrettyPrintInternal(XMLNode *node, FILE *fp, int indent_len, int
       fprintf(fp, " %s = \"%s\"", attr.key, attr.value);
     }
 
-    if (child->children.count == 0 && !child->text && !child->isComment) {
+    if (child->children.count == 0 && !child->text && (child->type != NT_COMMENT)) {
       fprintf(fp, " />\n");
     } else {
       fprintf(fp, ">");

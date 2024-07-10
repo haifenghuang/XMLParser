@@ -229,6 +229,10 @@ bool lexer_cur_token_is(lexer_t *lex, token_type_t type) {
   return lex->cur_token.type == type;
 }
 
+token_type_t lexer_cur_token(lexer_t *lex) {
+  return lex->cur_token.type;
+}
+
 bool lexer_peek_token_is(lexer_t *lex, token_type_t type) {
   return lex->peek_token.type == type;
 }

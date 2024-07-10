@@ -9,7 +9,7 @@ Chinese version: [中文](README_cn.md)
 - Simple
 - Easy to use and understand
 - Pretty printing XML
-- Node filtering & Selecting
+- Node Filtering & Selecting
 
 
 ## Limitations
