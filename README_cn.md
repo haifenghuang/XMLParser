@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
       fprintf(stdout, "MATCHES [%ld]:\n", i);
       for (size_t j = 0; j < food_node->children.count; ++j) {
         XMLNode *child = food_node->children.nodes[j];
-        if (child->isComment) continue;
+        if (child->type == NT_COMMENT) continue;
         fprintf(stdout, "\t %s: %s\n", child->name, XMLDecodeText(child));
       }
     }
