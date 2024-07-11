@@ -268,6 +268,14 @@ static void Test_test4xml(XMLDocument *doc) {
     }
     free(list3);
   }
+
+  fprintf(stdout, "\n============Test XMLNodeNextSibling============\n");
+  XMLNode *author_node = XMLSelectNode(root, "book[2]/author"); //returns the third book's first author node
+  printf("node %s=%s\n", author_node->name, author_node->text);
+  XMLNode *node = NULL;
+  for (node = XMLNodeNextSibling(author_node); node; node = XMLNodeNextSibling(node)) { //print sibling node
+    printf("node %s=%s\n", node->name, node->text);
+  }
 }
 
 static void Test_cdataxml(XMLDocument *doc) {

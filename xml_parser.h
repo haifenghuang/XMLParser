@@ -102,6 +102,9 @@ XMLNodeList *XMLFindNodeSelector(const XMLNode *node, Selector selectFn, void *u
 /* decode xml node text */
 char *XMLDecodeText(const XMLNode *node);
 
+/* Get the next sibling node or NULL if `node` is the last child */
+XMLNode *XMLNodeNextSibling(XMLNode *node);
+
 /* XML Document */
 bool XMLDocumentParseFile(XMLDocument *doc, const char *path);
 bool XMLDocumentParseStr(XMLDocument *doc, const char *xmlStr);

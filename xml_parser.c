@@ -438,6 +438,20 @@ char *XMLDecodeText(const XMLNode *node) {
   return result;
 }
 
+XMLNode *XMLNodeNextSibling(XMLNode *node)
+{
+  int i = 0;
+  XMLNode* parent = NULL;
+  
+  if (node == NULL || node->parent == NULL) return NULL;
+  
+  parent = node->parent;
+  for (i = 0; i < parent->children.count && parent->children.nodes[i] != node; i++) ;
+  i++;
+
+  return i < parent->children.count ? parent->children.nodes[i] : NULL;
+}
+
 /* XML Document */
 static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, const char *path, lexer_t *lexer) {
   XMLNodeListInit(&doc->others);
