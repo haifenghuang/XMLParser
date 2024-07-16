@@ -49,7 +49,26 @@ int main(int argc, char **argv) {
 </bookstore>
 ```
 
-### 选择特定节点(node)
+### 选择特定节点(XMLSelectNode)
+```c
+int main(int argc, char **argv) {
+  XMLDocument doc = { 0 };
+  bool result = XMLDocumentParseFile(&doc, "./test.xml");
+  if (result != true) {
+    fprintf(stderr, "XMLDocumentParseFile failed!\n");
+    exit(1);
+  }
+
+  XMLNode *root = XML_ROOT(doc);
+  XMLNode *n = XMLSelectNode(root, "fields/field[1]/age");
+  if (n != NULL) printf("n.text=%s\n", n->text);
+
+  XMLDocumentFree(&doc);
+  return 0;
+}
+```
+
+### 使用回调函数选择特定节点(XMLFindNodeSelector)
 ```c
 
 /* 将price节点的值大于5的food节点选出 */

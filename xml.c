@@ -170,7 +170,7 @@ void Test_testxml(XMLDocument *doc) {
   if (n != NULL) printf("n.text=%s\n", n->text);
 
   XMLNode *n2 = XMLSelectNode(root, "fields/field[1]/age");
-  if (n != NULL) printf("n2.text=%s\n", n2->text);
+  if (n2 != NULL) printf("n2.text=%s\n", n2->text);
 
 }
 

@@ -53,8 +53,26 @@ Result:
 </bookstore>
 ```
 
+### Select specific node(XMLSelectNode)
+```c
+int main(int argc, char **argv) {
+  XMLDocument doc = { 0 };
+  bool result = XMLDocumentParseFile(&doc, "./test.xml");
+  if (result != true) {
+    fprintf(stderr, "XMLDocumentParseFile failed!\n");
+    exit(1);
+  }
 
-### Select specific node
+  XMLNode *root = XML_ROOT(doc);
+  XMLNode *n = XMLSelectNode(root, "fields/field[1]/age");
+  if (n != NULL) printf("n.text=%s\n", n->text);
+
+  XMLDocumentFree(&doc);
+  return 0;
+}
+```
+
+### Select specific node with callback(XMLFindNodeSelector)
 ```c
 
 /* Select 'food' node which price is greater than 5 */
