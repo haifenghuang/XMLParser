@@ -96,6 +96,32 @@ int main(int argc, char **argv) {
 }
 ```
 
+结果:
+```
+# test4.xml:
+<bookstore>
+    <book>...</book>
+    <book>...</book>
+    <book category = "web">
+        <title lang = "en">XQuery Kick Start</title>
+        <author>James McGovern</author>
+        <author>Per Bothner</author>
+        <author>Kurt Cagle</author>
+        <author>James Linn</author>
+        <author>Vaidyanathan Nagarajan</author>
+        <year>2003</year>
+        <price>49.99</price>
+    </book>
+</bookstore>
+
+# 运行结果:
+James McGovern
+Per Bothner
+Kurt Cagle
+James Linn
+Vaidyanathan Nagarajan
+```
+
 ### 使用回调函数选择特定节点(XMLFindNodeSelector)
 ```c
 /* 将price节点的值大于5的food节点选出 */

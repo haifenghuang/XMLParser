@@ -100,6 +100,32 @@ int main(int argc, char **argv) {
 }
 ```
 
+Result:
+```
+# test4.xml:
+<bookstore>
+    <book>...</book>
+    <book>...</book>
+    <book category = "web">
+        <title lang = "en">XQuery Kick Start</title>
+        <author>James McGovern</author>
+        <author>Per Bothner</author>
+        <author>Kurt Cagle</author>
+        <author>James Linn</author>
+        <author>Vaidyanathan Nagarajan</author>
+        <year>2003</year>
+        <price>49.99</price>
+    </book>
+</bookstore>
+
+# Run result:
+James McGovern
+Per Bothner
+Kurt Cagle
+James Linn
+Vaidyanathan Nagarajan
+```
+
 ### Select specific node with callback(XMLFindNodeSelector)
 ```c
 /* Select 'food' node which price is greater than 5 */
