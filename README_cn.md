@@ -68,9 +68,36 @@ int main(int argc, char **argv) {
 }
 ```
 
+### 选择特定名字的节点(XMLSelectNode & XMLFindNode)
+```c
+int main(int argc, char **argv) {
+  XMLDocument doc = { 0 };
+  bool result = XMLDocumentParseFile(&doc, "./test4.xml");
+  if (result != true) {
+    fprintf(stderr, "XMLDocumentParseFile failed!\n");
+    exit(1);
+  }
+
+  /* 选择根节点的第三个book节点 */
+  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "book[2]");
+
+  /* 查找第三个book节点中的所有"author"节点 */
+  XMLNodeList *authorList = XMLFindNode(book, "author");
+  if (authorList != NULL) {
+    for (size_t i = 0; i < authorList->count; ++i) {
+      XMLNode *author = authorList->nodes[i];
+      fprintf(stderr, "%s\n", author->text);
+    }
+    free(authorList);
+  }
+
+  XMLDocumentFree(&doc);
+  return 0;
+}
+```
+
 ### 使用回调函数选择特定节点(XMLFindNodeSelector)
 ```c
-
 /* 将price节点的值大于5的food节点选出 */
 static XMLNodeList *PriceGreaterThanFiveFood(XMLNode *node, int idx, void *user_data) {
   XMLNodeList *list = malloc(sizeof(XMLNodeList));

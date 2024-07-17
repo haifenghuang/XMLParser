@@ -72,9 +72,36 @@ int main(int argc, char **argv) {
 }
 ```
 
+### Select specific node with name(XMLSelectNode & XMLFindNode)
+```c
+int main(int argc, char **argv) {
+  XMLDocument doc = { 0 };
+  bool result = XMLDocumentParseFile(&doc, "./test4.xml");
+  if (result != true) {
+    fprintf(stderr, "XMLDocumentParseFile failed!\n");
+    exit(1);
+  }
+
+  /* select the third book node of root */
+  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "book[2]");
+
+  /* find all the "author" node of third book node */
+  XMLNodeList *authorList = XMLFindNode(book, "author");
+  if (authorList != NULL) {
+    for (size_t i = 0; i < authorList->count; ++i) {
+      XMLNode *author = authorList->nodes[i];
+      fprintf(stderr, "%s\n", author->text);
+    }
+    free(authorList);
+  }
+
+  XMLDocumentFree(&doc);
+  return 0;
+}
+```
+
 ### Select specific node with callback(XMLFindNodeSelector)
 ```c
-
 /* Select 'food' node which price is greater than 5 */
 static XMLNodeList *PriceGreaterThanFiveFood(XMLNode *node, int idx, void *user_data) {
   XMLNodeList *list = malloc(sizeof(XMLNodeList));
