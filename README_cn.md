@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  XMLNode *root = XML_ROOT(doc);
+  XMLNode *root = XML_ROOT(&doc);
   XMLNode *n = XMLSelectNode(root, "fields/field[1]/age");
   if (n != NULL) printf("n.text=%s\n", n->text);
 
@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  XMLNodeList *list = XMLFindNodeSelector(XML_ROOT(doc), PriceGreaterThanFiveFood, (void *)"price");
+  XMLNodeList *list = XMLFindNodeSelector(XML_ROOT(&doc), PriceGreaterThanFiveFood, (void *)"price");
   if (list != NULL) {
     fprintf(stdout, "food count=[%ld]\n", list->count);
     for (size_t i = 0; i < list->count; ++i) {
