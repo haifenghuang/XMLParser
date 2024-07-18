@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
   if (authorList != NULL) {
     for (size_t i = 0; i < authorList->count; ++i) {
       XMLNode *author = authorList->nodes[i];
-      fprintf(stderr, "%s\n", author->text);
+      fprintf(stdout, "%ld: %s\n", author->index, author->text);
     }
     free(authorList);
   }
