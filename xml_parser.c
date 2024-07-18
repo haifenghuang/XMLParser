@@ -143,6 +143,8 @@ void XMLNodeListFree(XMLNodeList *list) {
 /* XML Node */
 static XMLNode *XMLNodeNew(XMLNode *parent) {
   XMLNode *node = (XMLNode *)malloc(sizeof(XMLNode));
+  node->index = 0;
+  if (parent) node->index = parent->children.count;
   node->parent = parent;
   node->name = NULL;
   node->text = NULL;

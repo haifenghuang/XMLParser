@@ -37,6 +37,7 @@ typedef struct XMLNode {
   struct XMLNode *parent;
   XMLAttrList attrList;
   XMLNodeList children;
+  size_t index; /* index in parent's children. The index start at 0 */
 }XMLNode;
 
 typedef struct XMLDocument {
