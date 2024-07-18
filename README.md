@@ -199,5 +199,32 @@ MATCHES [3]:
          calories: 950
 ```
 
+### Handling attributes
+```c
+int main(int argc, char **argv) {
+  XMLDocument doc = { 0 };
+  bool result = XMLDocumentParseFile(&doc, "./test4.xml");
+  if (result != true) {
+    fprintf(stderr, "XMLDocumentParseFile failed!\n");
+    exit(1);
+  }
+
+  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "book[-1]"); //select the last book node
+  for (size_t i = 0; i < book->attrList.count; ++i) { //iterating the attribute
+    XMLAttr attr = book->attrList.attrs[i];
+    fprintf(stdout, "%s => %s\n", attr.key, attr.value);
+  }
+
+  XMLDocumentFree(&doc);
+  return 0;
+}
+```
+
+Result:
+```
+category => web
+cover => paperback
+```
+
 ## License
 MIT License
