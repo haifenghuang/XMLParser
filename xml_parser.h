@@ -6,6 +6,7 @@
 typedef struct XMLAttr {
   char *key;
   char *value;
+  struct XMLNode *node; //Node which the attribute belongs
 }XMLAttr;
 
 typedef struct XMLAttrList {

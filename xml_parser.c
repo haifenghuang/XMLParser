@@ -196,6 +196,7 @@ static bool _XMLParseTree(lexer_t *lexer, XMLNode *node) {
   while (!lexer_cur_token_is(lexer, TOKEN_CLOSE_TAG) && !lexer_cur_token_is(lexer, TOKEN_CLOSESLASH_TAG)) {
     if (!lexer_cur_token_is(lexer, TOKEN_NAME)) return false;
     XMLAttr curr_attr =  { 0 };
+    curr_attr.node = node;
     curr_attr.key = GET_CURR_TOKEN_VALUE(lexer);
     EXPECT(lexer, TOKEN_ASSIGN);
     EXPECT(lexer, TOKEN_STRING);
