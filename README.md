@@ -119,11 +119,11 @@ Result:
 </bookstore>
 
 # Run result:
-James McGovern
-Per Bothner
-Kurt Cagle
-James Linn
-Vaidyanathan Nagarajan
+1： James McGovern
+2： Per Bothner
+3： Kurt Cagle
+4： James Linn
+5： Vaidyanathan Nagarajan
 ```
 
 ### Select specific node with callback(XMLFindNodeSelector)

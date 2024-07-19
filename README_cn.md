@@ -115,11 +115,11 @@ int main(int argc, char **argv) {
 </bookstore>
 
 # 运行结果:
-James McGovern
-Per Bothner
-Kurt Cagle
-James Linn
-Vaidyanathan Nagarajan
+1： James McGovern
+2： Per Bothner
+3： Kurt Cagle
+4： James Linn
+5： Vaidyanathan Nagarajan
 ```
 
 ### 使用回调函数选择特定节点(XMLFindNodeSelector)
