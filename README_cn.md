@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
   }
 
   XMLNode *root = XML_ROOT(&doc);
-  XMLNode *n = XMLSelectNode(root, "fields/field[1]/age");
+  XMLNode *n = XMLSelectNode(root, "fields/field[1]/age"); //选择<fields>节点的第二个<field>节点的<age>子节点
   if (n != NULL) printf("n.text=%s\n", n->text);
 
   XMLDocumentFree(&doc);

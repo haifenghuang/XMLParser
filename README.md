@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
   }
 
   XMLNode *root = XML_ROOT(&doc);
-  XMLNode *n = XMLSelectNode(root, "fields/field[1]/age");
+  XMLNode *n = XMLSelectNode(root, "fields/field[1]/age"); //select <fields> node's second <field>'s <age> child node
   if (n != NULL) printf("n.text=%s\n", n->text);
 
   XMLDocumentFree(&doc);
