@@ -92,6 +92,10 @@ size_t XMLAttrListCount(XMLAttrList *list) {
 void XMLAttrListFree(XMLAttrList *list) {
   if (list == NULL) return;
   for (size_t i = 0; i < list->count; ++i) XMLAttrFree(&list->attrs[i]);
+  if (list->attrs) {
+    free(list->attrs);
+    list->attrs = NULL;
+  }
 }
 
 /* Node-List */
@@ -137,6 +141,11 @@ void XMLNodeListFree(XMLNodeList *list) {
       free(child);
       child = NULL;
     }
+  }
+
+  if (list->nodes) {
+    free(list->nodes);
+    list->nodes = NULL;
   }
 }
 
