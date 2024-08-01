@@ -263,7 +263,7 @@ XMLNode *XMLSelectNode(XMLNode *node, const char *node_path) {
 
   XMLNode *result = node;
 
-  int len = strlen(node_path + 2);
+  int len = strlen(node_path) + 2;
   char *tag = (char *)malloc(len * sizeof(char));
   if (tag == NULL) {
     fprintf(stderr, "Cannot allocate enough memory.\n");
