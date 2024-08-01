@@ -238,7 +238,7 @@ static bool _XMLParseTree(lexer_t *lexer, XMLNode *node) {
     } else if (lexer_cur_token_is(lexer, TOKEN_COMMENT)) {
       XMLNode *child = XMLNodeNew(node);
       child->name = GET_CURR_TOKEN_VALUE(lexer);
-      node->type = NT_COMMENT;
+      child->type = NT_COMMENT;
       NEXT(lexer);
     } else {
       return false;
