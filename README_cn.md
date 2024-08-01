@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
   }
 
   XMLNode *root = XML_ROOT(&doc);
-  XMLNode *n = XMLSelectNode(root, "fields/field[1]/age"); //选择<fields>节点的第二个<field>节点的<age>子节点
+  XMLNode *n = XMLSelectNode(root, "fields/field[2]/age"); //选择<fields>节点的第二个<field>节点的<age>子节点
   if (n != NULL) printf("n.text=%s\n", n->text);
 
   XMLDocumentFree(&doc);
@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
   }
 
   /* 选择根节点的第三个book节点 */
-  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "book[2]");
+  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "book[3]");
 
   /* 查找第三个book节点中的所有"author"节点 */
   XMLNodeList *authorList = XMLFindNode(book, "author");

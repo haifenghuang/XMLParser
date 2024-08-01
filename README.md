@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
   }
 
   XMLNode *root = XML_ROOT(&doc);
-  XMLNode *n = XMLSelectNode(root, "fields/field[1]/age"); //select <fields> node's second <field>'s <age> child node
+  XMLNode *n = XMLSelectNode(root, "fields/field[2]/age"); //select <fields> node's second <field>'s <age> child node
   if (n != NULL) printf("n.text=%s\n", n->text);
 
   XMLDocumentFree(&doc);
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
   }
 
   /* select the third book node of root */
-  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "book[2]");
+  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "book[3]");
 
   /* find all the "author" node of third book node */
   XMLNodeList *authorList = XMLFindNode(book, "author");

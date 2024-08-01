@@ -300,8 +300,8 @@ XMLNode *XMLSelectNode(XMLNode *node, const char *node_path) {
       strncpy(index, p1 + 1, p2 - p1 - 1);
       index[p2 - p1 - 1] = '\0'; //make sure it is null terminated
       int idx = atoi(index);
-      if (idx < 0) idx = result->children.count + idx; // allow negative indexes
-      if (idx < 0 || idx >= result->children.count) {
+      if (idx < 0) idx = result->children.count + idx + 1; // allow negative indexes
+      if (idx < 0 || idx > result->children.count) {
         fprintf(stderr, "index out of bounds\n");
         free(tag);
         free(index);
@@ -319,7 +319,7 @@ XMLNode *XMLSelectNode(XMLNode *node, const char *node_path) {
       strncpy(tagname, p, p1 - p);
       tagname[p1 - p] = '\0'; //make sure it is null terminated
 
-      XMLNode *child = result->children.nodes[idx];
+      XMLNode *child = result->children.nodes[idx - 1];
       if (strncmp(child->name, tagname, strlen(tagname)) == 0) {
         result = child;
         free(tagname);
