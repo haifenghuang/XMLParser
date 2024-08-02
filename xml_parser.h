@@ -80,7 +80,7 @@ size_t XMLNodeChildrenCount(XMLNode *node);
  * */
 XMLNode *XMLSelectNode(XMLNode *node, const char *node_path);
 
-#define XML_ROOT(doc) (doc)->root->children.nodes[0]
+#define XML_ROOT(doc) (doc)->root
 XMLNode *XMLRootNode(XMLDocument *doc);
 
 /* Find first node of `node` with name `node_name` */

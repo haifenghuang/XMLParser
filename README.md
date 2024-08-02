@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
   }
 
   XMLNode *root = XML_ROOT(&doc);
-  XMLNode *n = XMLSelectNode(root, "fields/field[2]/age"); //select <fields> node's second <field>'s <age> child node
+  XMLNode *n = XMLSelectNode(root, "/struct/fields/field[2]/age"); //select <fields> node's second <field>'s <age> child node
   if (n != NULL) printf("n.text=%s\n", n->text);
 
   XMLDocumentFree(&doc);
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
   }
 
   /* select the third book node of root */
-  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "book[3]");
+  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "/bookstore/book[3]");
 
   /* find all the "author" node of third book node */
   XMLNodeList *authorList = XMLFindNode(book, "author");
@@ -209,7 +209,7 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "book[-1]"); //select the last book node
+  XMLNode *book = XMLSelectNode(XML_ROOT(&doc), "/bookstore/book[-1]"); //select the last book node
   for (size_t i = 0; i < book->attrList.count; ++i) { //iterating the attribute
     XMLAttr attr = book->attrList.attrs[i];
     fprintf(stdout, "%s => %s\n", attr.key, attr.value);

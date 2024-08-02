@@ -109,10 +109,10 @@ void Test_simplexml(XMLDocument *doc) {
 /* Testing for 'test2.xml' file */
 void Test_test2xml(XMLDocument *doc) {
   XMLNode *root = XML_ROOT(doc);
-  XMLNode *n2 = XMLSelectNode(root, "h:tr[2]/h:td[1]");
+  XMLNode *n2 = XMLSelectNode(root, "/h:table/h:tr[3]/h:td[2]");
   if (n2 != NULL) printf("n2.text=%s\n", n2->text);
 
-  XMLNode *n3 = XMLSelectNode(root, "h:tr[-1]/h:td[1]");
+  XMLNode *n3 = XMLSelectNode(root, "/h:table/h:tr[-1]/h:td[2]");
   if (n3 != NULL) printf("n3.text=%s\n", n3->text); //should be the same result with above code.
 }
 
@@ -121,7 +121,7 @@ void Test_testxml(XMLDocument *doc) {
   XMLNode *root = XML_ROOT(doc);
 
   fprintf(stdout, "\n============Search Node============\n");
-  XMLNode *m = XMLSelectNode(root, "fields");
+  XMLNode *m = XMLSelectNode(root, "/struct/fields");
   if (m) {
     XMLNodeList *list = XMLFindNode(m, "field");
     if (list) {
@@ -152,7 +152,7 @@ void Test_testxml(XMLDocument *doc) {
   }
 
   fprintf(stdout, "\n============Search Node with Selector============\n");
-  XMLNode *m2 = XMLSelectNode(root, "fields");
+  XMLNode *m2 = XMLSelectNode(root, "/struct/fields");
   if (m) {
     XMLNodeList *list = XMLFindNodeSelector(m2, AgeGreaterEqualThan48, (void*)"age");
     if (list) {
@@ -166,10 +166,10 @@ void Test_testxml(XMLDocument *doc) {
   }
 
   fprintf(stdout, "\n============XMLSelectNode============\n");
-  XMLNode *n = XMLSelectNode(root, "fields/field/name");
+  XMLNode *n = XMLSelectNode(root, "/struct/fields/field[1]/name");
   if (n != NULL) printf("n.text=%s\n", n->text);
 
-  XMLNode *n2 = XMLSelectNode(root, "fields/field[1]/age");
+  XMLNode *n2 = XMLSelectNode(root, "/struct/fields/field[2]/age");
   if (n2 != NULL) printf("n2.text=%s\n", n2->text);
 
 }
@@ -231,7 +231,7 @@ static void Test_test4xml(XMLDocument *doc) {
 
   /* Select the title of the first book */
   fprintf(stdout, "\n============Select the title of the first book============\n");
-  XMLNode *n1 = XMLSelectNode(root, "book[0]/title");
+  XMLNode *n1 = XMLSelectNode(root, "/bookstore/book[1]/title");
   if (n1) {
     printf("title=%s\n", n1->text);
   }
@@ -270,7 +270,7 @@ static void Test_test4xml(XMLDocument *doc) {
   }
 
   fprintf(stdout, "\n============Test XMLNodeNextSibling============\n");
-  XMLNode *author_node = XMLSelectNode(root, "book[2]/author"); //returns the third book's first author node
+  XMLNode *author_node = XMLSelectNode(root, "/bookstore/book[3]/author"); //returns the third book's first author node
   printf("node %s=%s\n", author_node->name, author_node->text);
   XMLNode *node = NULL;
   for (node = XMLNodeNextSibling(author_node); node; node = XMLNodeNextSibling(node)) { //print sibling node
@@ -280,7 +280,7 @@ static void Test_test4xml(XMLDocument *doc) {
 
 static void Test_cdataxml(XMLDocument *doc) {
   XMLNode *root = XML_ROOT(doc);
-  XMLNode *m = XMLSelectNode(root, "description");
+  XMLNode *m = XMLSelectNode(root, "/address/description");
   if (m) {
     fprintf(stdout, "description=%s\n", XMLDecodeText(m));
   }
@@ -288,7 +288,7 @@ static void Test_cdataxml(XMLDocument *doc) {
 
 static void Test_doctypexml(XMLDocument *doc) {
   XMLNode *root = XML_ROOT(doc);
-  XMLNode *m = XMLSelectNode(root, "description");
+  XMLNode *m = XMLSelectNode(root, "/address/description");
   if (m) {
     fprintf(stdout, "description=%s\n", XMLDecodeText(m));
   }

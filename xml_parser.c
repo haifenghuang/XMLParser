@@ -346,10 +346,12 @@ XMLNode *XMLSelectNode(XMLNode *node, const char *node_path) {
 
 XMLNode *XMLRootNode(XMLDocument *doc) {
   if (doc == NULL) return NULL;
-  return doc->root->children.nodes[0];
+  return doc->root;
 }
 
 XMLNode *XMLFindFirstNode(const XMLNode *node, const char *node_name) {
+  if (strncmp(node->name, node_name, strlen(node_name)) == 0) return (XMLNode *)node;
+
   for (size_t i = 0; i < node->children.count; ++i) {
     XMLNode *child = node->children.nodes[i];
     if (strncmp(child->name, node_name, strlen(node_name)) == 0) {
@@ -468,9 +470,6 @@ XMLNode *XMLNodeNextSibling(XMLNode *node)
 static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, const char *path, lexer_t *lexer) {
   XMLNodeListInit(&doc->others);
 
-  doc->root = XMLNodeNew(NULL);
-  XMLNode *curr_node = doc->root;
-
   if (path == NULL) {
     lexer_init(lexer, xmlStr, NULL);
   } else {
@@ -499,8 +498,8 @@ static bool _XMLDocumentParseInternal(XMLDocument *doc, const char *xmlStr, cons
   }
 
   // parse root node
-  curr_node = XMLNodeNew(curr_node);
-  if (!_XMLParseTree(lexer, curr_node)) return false;
+  doc->root = XMLNodeNew(NULL);
+  if (!_XMLParseTree(lexer, doc->root)) return false;
 
   return lexer_cur_token_is(lexer, TOKEN_EOF);
 }
@@ -566,7 +565,16 @@ bool XMLPrettyPrint(XMLDocument *doc, FILE *fp, int indent_len) {
       fprintf(fp, "%s\n", other->name); //node name
   }
 
-  _XMLPrettyPrintInternal(doc->root, fp, indent_len, 0);
+  //print root node
+  fprintf(fp, "<%s", doc->root->name); //root name
+  for (size_t j = 0; j < doc->root->attrList.count; ++j) { //root attributes
+      XMLAttr attr = doc->root->attrList.attrs[j];
+      if (!attr.value || !strcmp(attr.value, "")) continue;
+      fprintf(fp, " %s = \"%s\"", attr.key, attr.value);
+  }
+  fprintf(fp, ">\n");
+  _XMLPrettyPrintInternal(doc->root, fp, indent_len, 1);
+  fprintf(fp, "</%s>\n", doc->root->name);
 }
 
 void XMLDocumentFree(XMLDocument *doc) {
