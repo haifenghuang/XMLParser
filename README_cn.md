@@ -1,5 +1,5 @@
 # C语言简单XML解析器
-XMLParser是用c语言写的一个简单的XML解析器。它的主要目的是写一个容易理解且易于使用的XML处理器。虽然这个解析器不是很完美, 但是它能够处理大部分标准的XML文档。同时它也不支持xpath语法，但是它提供了一个用户友好且易用(也许更优雅)的方法来选择/过滤XML节点(虽然不如XPath强大)。
+XMLParser是用c语言写的一个简单的XML解析器。它的主要目的是写一个容易理解且易于使用的XML处理器。虽然这个解析器不是很完美, 但是它能够处理大部分标准的XML文档。同时它支持简单的xpath语法。它同时提供了一个用户友好且易用(也许更优雅)的方法来选择/过滤XML节点(虽然不如XPath强大)。
 
 English version: [English](README.md)
 ## 特点
@@ -7,6 +7,7 @@ English version: [English](README.md)
 - 易于使用和理解
 - XML文档格式化
 - 节点过滤和选择
+- 简单XPATH支持
 
 ## 限制
 - ~~不支持CDATA~~
@@ -220,6 +221,42 @@ int main(int argc, char **argv) {
 ```
 category => web
 cover => paperback
+```
+
+### XPath
+```c
+static void xpath_test(void) {
+  XMLDocument doc = { 0 };
+  bool result = XMLDocumentParseFile(&doc, "./bookstore.xml");
+  if (result != true) {
+    fprintf(stderr, "XMLDocumentParseFile failed!\n");
+    exit(1);
+  }
+  XPathResult result1 = xpath("/bookstore/book[@category=CHILDREN]//text()", doc.root);
+  printf("xpath result = %s\n", result1.text);
+
+  XPathResult result2 = xpath("/bookstore/book/title/../price/text()", doc.root);
+  printf("xpath result2 = %s\n", result2.text);
+
+  XPathResult result3 = xpath("/bookstore/book[1]/title/text()", doc.root);
+  printf("xpath result3 = %s\n", result3.text);
+
+  XPathResult result4 = xpath("/bookstore/book[@category=CHILDREN]/year", doc.root);
+  printf("xpath result4 = %s\n", result4.node->text);
+  /* 下面两行等价于上面的两行 */
+  //XPathResult result4 = xpath("/bookstore/book[@category=CHILDREN]/year/text()", root);
+  //printf("xpath result4 = %s\n", result4.text);
+
+  XPathResult result5 = xpath("/bookstore/book[1]//title", doc.root);
+  for (size_t i = 0; i < result5.nodes.count; ++i) {
+    XMLNode *child = result5.nodes.nodes[i];
+    printf("xpath result5 = %s\n", child->text);
+  }
+  //如果xpath()的结果是一个nodelist， 需要调用'xpath_free（）'释放内存
+  xpath_free(&result5);
+
+  XMLDocumentFree(&doc);
+}
 ```
 
 ## License

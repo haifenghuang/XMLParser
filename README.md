@@ -1,7 +1,7 @@
 # A simple XML parser for C
 XMLParser is a simple XML parser for the C language. It is intended to be simple to understand and easy to use. Although the parser has some limitations, but it can handle
-most of the standard xml files. And it also does not support xpath syntax, but
-it has an easy to understand(maybe more elegent) way for selecting/filtering the xml node(though not powerful than xpath).
+most of the standard xml files. And it support part of xpath syntax,
+it also has an easy to understand(maybe more elegent) way for selecting/filtering the xml node(though not powerful than xpath).
 
 Chinese version: [中文](README_cn.md)
 
@@ -10,6 +10,7 @@ Chinese version: [中文](README_cn.md)
 - Easy to use and understand
 - Pretty printing XML
 - Node Filtering & Selecting
+- Simple XPath support
 
 
 ## Limitations
@@ -224,6 +225,42 @@ Result:
 ```
 category => web
 cover => paperback
+```
+
+### XPath
+```c
+static void xpath_test(void) {
+  XMLDocument doc = { 0 };
+  bool result = XMLDocumentParseFile(&doc, "./bookstore.xml");
+  if (result != true) {
+    fprintf(stderr, "XMLDocumentParseFile failed!\n");
+    exit(1);
+  }
+  XPathResult result1 = xpath("/bookstore/book[@category=CHILDREN]//text()", doc.root);
+  printf("xpath result = %s\n", result1.text);
+
+  XPathResult result2 = xpath("/bookstore/book/title/../price/text()", doc.root);
+  printf("xpath result2 = %s\n", result2.text);
+
+  XPathResult result3 = xpath("/bookstore/book[1]/title/text()", doc.root);
+  printf("xpath result3 = %s\n", result3.text);
+
+  XPathResult result4 = xpath("/bookstore/book[@category=CHILDREN]/year", doc.root);
+  printf("xpath result4 = %s\n", result4.node->text);
+  /* below two lines are same as above */
+  //XPathResult result4 = xpath("/bookstore/book[@category=CHILDREN]/year/text()", root);
+  //printf("xpath result4 = %s\n", result4.text);
+
+  XPathResult result5 = xpath("/bookstore/book[1]//title", doc.root);
+  for (size_t i = 0; i < result5.nodes.count; ++i) {
+    XMLNode *child = result5.nodes.nodes[i];
+    printf("xpath result5 = %s\n", child->text);
+  }
+  //if the xpath result is a nodelist, we need to use 'xpath_free（）' to free the memory
+  xpath_free(&result5);
+
+  XMLDocumentFree(&doc);
+}
 ```
 
 ## License

@@ -1,4 +1,4 @@
-SRCS=xml.c xml_parser.c xml_lexer.c
+SRCS=xml.c xml_parser.c xml_lexer.c xpath.c
 OBJS=$(SRCS:.c=.o)
 
 TARGET=xml_parser

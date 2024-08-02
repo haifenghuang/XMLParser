@@ -1,0 +1,20 @@
+<bookstore company="codecat" boss="man">
+   <book category="CHILDREN">
+       <title>Harry Potter</title>
+       <title>Sub harry potter</title>
+       <author>J K.Rowlingk</author>
+       <year>2005</year>
+       <price>29.99</price>
+   </book>
+   <book category="WEB">
+       <title>Learning XML</title>
+       <author>Erik T.Ray</author>
+       <year>2003</year>
+       <book>
+          <title>Start</title>
+          <author>hhf</author>
+          <year>1977</year>
+       </book>
+       <price>39.95</price>
+   </book>
+</bookstore>
