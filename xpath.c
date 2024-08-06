@@ -229,7 +229,6 @@ static void xpath_select_attr_from_this(const char *name, XMLNode *node, char *o
   }
 }
 
-static XMLNodeList queue;
 /* //name */
 static void xpath_select_node_all_descendants(const char *name, XMLNode *node, XMLNodeList *list)
 {
@@ -240,10 +239,7 @@ static void xpath_select_node_all_descendants(const char *name, XMLNode *node, X
 
   for (size_t i = 0; i < node->children.count; ++i) {
     XMLNode *child = node->children.nodes[i];
-    if (XMLNodeListCount(&queue) == 0) {
-      xpath_select_node_all_descendants(name, child, list);
-      XMLNodeListRemove(&queue);
-    }
+    xpath_select_node_all_descendants(name, child, list);
   }
 }
 
@@ -258,7 +254,7 @@ static pair_t* parse_sub_path(const char *op) {
       strcpy(ret->second, op+2);
     }
   } else {
-    //取子代
+    //å–å­ä»£
     if (strstr(op, "..") != NULL) {
       ret->first = SELECT_PARENT;
       strcpy(ret->second, "");
@@ -384,7 +380,6 @@ XPathResult xpath(const char *path, XMLNode *node) {
   optionList options = { 0 };
   XPathResult ret = { 0 };
 
-  XMLNodeListInit(&queue);
   XMLNodeListInit(&ret.nodes);
   optionListInit(&options);
 
@@ -393,7 +388,6 @@ XPathResult xpath(const char *path, XMLNode *node) {
   bool result = execute(&options, node, &ret);
   if (!result) memset(&ret, 0x00, sizeof(ret));
 
-  XMLNodeListFree(&queue);
   optionListFree(&options);
 
   return ret;
