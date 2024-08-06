@@ -66,6 +66,7 @@ void XMLNodeListInit(XMLNodeList *list);
 void XMLNodeListAdd(XMLNodeList *list, XMLNode *node);
 void XMLNodeListAddList(XMLNodeList *list, XMLNodeList *srcList);
 XMLNode *XMLNodeListGet(XMLNodeList *list, int index);
+XMLNode *XMLNodeListRemove(XMLNodeList *list);
 size_t XMLNodeListCount(XMLNodeList *list);
 void XMLNodeListFree(XMLNodeList *list);
 

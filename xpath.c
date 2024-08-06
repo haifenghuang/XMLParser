@@ -7,7 +7,7 @@
 typedef enum Action {
     SELECT_PARENT,                     // /..                select parent node
     SELECT_THIS,                       // /.                 select current node
-    SELECT_NODE_ALL_CHILD,             // //name             select all the children nodes which match 'name
+    SELECT_NODE_ALL_DESC,              // //name             select all the descendants nodes which match 'name
     SELECT_NODE_FIRST_CHILD,           // /name              select the first child node which matches 'name'
     SELECT_NODE_BY_ARRAY_AND_NAME,     // /name[n]           select the nth node of 'name' node.
     SELECT_NODE_BY_ATTR_AND_NAME,      // /name[@attr]       select 'name' node which attribute matches 'attr'
@@ -78,8 +78,8 @@ static const char *action_to_str(Action action) {
    case SELECT_THIS:
      return "select_this_node";
      break;
-   case SELECT_NODE_ALL_CHILD:
-     return "select_node_all_child";
+   case SELECT_NODE_ALL_DESC:
+     return "select_node_all_desc";
      break;
    case SELECT_NODE_FIRST_CHILD:
      return "select_node_first_child";
@@ -228,13 +228,21 @@ static void xpath_select_attr_from_this(const char *name, XMLNode *node, char *o
     }
   }
 }
+
+static XMLNodeList queue;
 /* //name */
-static void xpath_select_node_all_child(const char *name, XMLNode *node, XMLNodeList *list)
+static void xpath_select_node_all_descendants(const char *name, XMLNode *node, XMLNodeList *list)
 {
+  if (strcmp(node->name, name) == 0) {
+    XMLNodeListAdd(list, node);
+    return;
+  }
+
   for (size_t i = 0; i < node->children.count; ++i) {
     XMLNode *child = node->children.nodes[i];
-    if (strcmp(child->name, name) == 0) {
-      XMLNodeListAdd(list, child);
+    if (XMLNodeListCount(&queue) == 0) {
+      xpath_select_node_all_descendants(name, child, list);
+      XMLNodeListRemove(&queue);
     }
   }
 }
@@ -246,7 +254,7 @@ static pair_t* parse_sub_path(const char *op) {
       ret->first = SELECT_TEXTS_FROM_CHILD;
       strcpy(ret->second, op+2);
     } else {
-      ret->first = SELECT_NODE_ALL_CHILD;
+      ret->first = SELECT_NODE_ALL_DESC;
       strcpy(ret->second, op+2);
     }
   } else {
@@ -323,8 +331,8 @@ static bool execute(optionList *options, XMLNode *node, XPathResult *ret) {
       case SELECT_THIS:
 	ret->isMulti = false;
         break;
-      case SELECT_NODE_ALL_CHILD:
-        xpath_select_node_all_child(name, n, &ret->nodes);
+      case SELECT_NODE_ALL_DESC:
+        xpath_select_node_all_descendants(name, n, &ret->nodes);
 	ret->isMulti = true;
 	break;
       case SELECT_NODE_FIRST_CHILD:
@@ -376,6 +384,7 @@ XPathResult xpath(const char *path, XMLNode *node) {
   optionList options = { 0 };
   XPathResult ret = { 0 };
 
+  XMLNodeListInit(&queue);
   XMLNodeListInit(&ret.nodes);
   optionListInit(&options);
 
@@ -384,6 +393,7 @@ XPathResult xpath(const char *path, XMLNode *node) {
   bool result = execute(&options, node, &ret);
   if (!result) memset(&ret, 0x00, sizeof(ret));
 
+  XMLNodeListFree(&queue);
   optionListFree(&options);
 
   return ret;

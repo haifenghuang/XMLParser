@@ -126,6 +126,13 @@ XMLNode *XMLNodeListGet(XMLNodeList *list, int index) {
   return list->nodes[index];
 }
 
+XMLNode *XMLNodeListRemove(XMLNodeList *list) {
+  if (list->count == 0) return NULL;
+  XMLNode *n = list->nodes[list->count - 1];
+  list->count--;
+  return n;
+}
+
 size_t XMLNodeListCount(XMLNodeList *list) {
   if (list == NULL) return 0;
   return list->count;
