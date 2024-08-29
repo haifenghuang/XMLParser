@@ -563,7 +563,7 @@ static void _XMLPrettyPrintInternal(XMLNode *node, FILE *fp, int indent_len, int
   } //end for 
 }
 
-bool XMLPrettyPrint(XMLDocument *doc, FILE *fp, int indent_len) {
+void XMLPrettyPrint(XMLDocument *doc, FILE *fp, int indent_len) {
   if (fp == NULL) fp = stdout;
 
   /* print nodes before root */

@@ -192,7 +192,6 @@ static XMLNode *xpath_select_node_by_array_and_name(const char *name, XMLNode *n
   int j = atoi(str_idx);
   strncpy(attr_name, name, l_idx-name);
 
-  int i = 0;
   for (size_t i = 0; i < node->children.count; ++i) {
     XMLNode *child = node->children.nodes[i];
     if (strcmp(child->name, attr_name) == 0) {
@@ -285,7 +284,9 @@ static pair_t* parse_sub_path(const char *op) {
       strcpy(ret->second, op+1);
     }
   }
-  //printf("%s %s\n", action_to_str(ret->first), ret->second);
+#ifdef DEBUG
+  printf("%s %s\n", action_to_str(ret->first), ret->second);
+#endif
   return ret;
 }
 
@@ -375,7 +376,6 @@ static bool execute(optionList *options, XMLNode *node, XPathResult *ret) {
 }
 
 XPathResult xpath(const char *path, XMLNode *node) {
-  int len = 0;
   //char *_path = NULL;
   optionList options = { 0 };
   XPathResult ret = { 0 };

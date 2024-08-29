@@ -111,7 +111,7 @@ XMLNode *XMLNodeNextSibling(XMLNode *node);
 /* XML Document */
 bool XMLDocumentParseFile(XMLDocument *doc, const char *path);
 bool XMLDocumentParseStr(XMLDocument *doc, const char *xmlStr);
-bool XMLPrettyPrint(XMLDocument *doc, FILE *fp, int ident_len);
+void XMLPrettyPrint(XMLDocument *doc, FILE *fp, int ident_len);
 void XMLDocumentFree(XMLDocument *doc);
 
 #endif

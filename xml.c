@@ -331,7 +331,7 @@ static void xpath_test(void) {
 int main(int argc, char **argv) {
   char *filename = "./test.xml";
 #ifdef LEX_DEBUG
-  conents = read_file(filename);
+  char *contents = read_file(filename);
   lexer_t lexer;
   lexer_init(&lexer, contents, filename);
 
