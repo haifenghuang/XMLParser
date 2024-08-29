@@ -14,6 +14,16 @@ English version: [English](README.md)
 - ~~不支持DOCTYPE()~~(DOCTYPE只支持解析，不支持验证)
 - 不支持Unicode(只支持UTF-8)
 
+## 关于CMake
+这是我第一次在项目中尝试使用`CMake`。所以我将原来的`makefile`更改成了`makefile.old`。增加了`CMakeLists.txt`文件。
+要使用`CMake`来构建项目，请使用如下的命令：
+
+```sh
+  cmake -S . -B build
+  cmake --build build/
+  cd build && ./xml_parser
+```
+
 ## 使用例
 
 ### 格式化XML文档

@@ -18,6 +18,16 @@ Chinese version: [中文](README_cn.md)
 - ~~Do not support DOCTYPE~~(Only parsing, no validation)
 - Do not support Unicode(Only support UTF-8)
 
+## About CMake
+This is my first time trying to use `CMake` in a project. So I changed the origin `makefile` to `makefile.old`,
+and added `CMakeLists.txt` file. To use `CMake` to build the project, please use below commands:
+
+```sh
+  cmake -S . -B build
+  cmake --build build/
+  cd build && ./xml_parser
+```
+
 ## Usage Examples
 
 ### Pretty printing xml file
