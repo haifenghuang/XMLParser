@@ -17,5 +17,6 @@ set(SRCS
      xpath.c
    )
 add_executable(xml_parser ${SRCS})
-target_compile_definitions( xml_parser PRIVATE LEX_DEBUG=1 )
-target_compile_definitions( xml_parser PRIVATE DEBUG=1 )
+target_compile_definitions( xml_parser PRIVATE LEX_DEBUG DEBUG) # new way
+#add_definitions(-DLEX_DEBUG -DDEBUG) # old way
+
