@@ -21,7 +21,8 @@ English version: [English](README.md)
 ```sh
   cmake -S . -B build
   cmake --build build/
-  cd build && ./xml_parser
+  ctest --test-dir build   # 运行测试
+  cd build && ./xml_parser # 直接运行
 ```
 
 ## 使用例

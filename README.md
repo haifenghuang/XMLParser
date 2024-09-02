@@ -25,7 +25,8 @@ and added `CMakeLists.txt` file. To use `CMake` to build the project, please use
 ```sh
   cmake -S . -B build
   cmake --build build/
-  cd build && ./xml_parser
+  ctest --test-dir build   # if you want to run test
+  cd build && ./xml_parser # simple run the command
 ```
 
 ## Usage Examples
